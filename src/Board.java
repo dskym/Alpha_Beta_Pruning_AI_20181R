@@ -1,13 +1,16 @@
 /*
 Board
-- 판 상태를 체크
-- 오목인지 체크
+- 유효 값 체크
+- 오목 체크
+- 현재 판 출력
 */
 
 public class Board {
-    private int[][] board = new int[Game.BOARD_SIZE][Game.BOARD_SIZE];
+    private int[][] board;
 
     public Board() {
+        board = new int[Game.BOARD_SIZE][Game.BOARD_SIZE];
+
         for (int i = 0; i < Game.BOARD_SIZE; ++i)
             for (int j = 0; j < Game.BOARD_SIZE; ++j)
                 this.board[i][j] = 0;
@@ -24,12 +27,183 @@ public class Board {
             return true;
     }
 
+   public boolean isExist(int x, int y) {
+        if(board[x][y] != 0)
+            return true;
+        else
+            return false;
+   }
+
+    public boolean checkBoard(int x, int y) {
+        int color = this.board[x][y];
+
+        //가로 체크
+        int _x = x;
+        int _y = y;
+        int count = 0;
+
+        while (true) {
+            --_y;
+
+            if(_y < 0) {
+                _y = 0;
+                break;
+            }
+
+            if (isValid(_x, _y)) {
+                if (board[_x][_y] != color) {
+                    ++_y;
+                    break;
+                }
+            } else
+                break;
+        }
+
+        for (int i = 0; i < 5; ++i) {
+            if (isValid(_x, _y + i)) {
+                if (board[_x][_y + i] == color)
+                    count++;
+                else
+                    break;
+            } else
+                break;
+        }
+
+        if (count == 5)
+            return true;
+
+        //세로 체크
+        _x = x;
+        _y = y;
+        count = 0;
+
+        while (true) {
+            --_x;
+
+            if(_x < 0) {
+                _x = 0;
+                break;
+            }
+
+            if (isValid(_x, _y)) {
+                if (board[_x][_y] != color) {
+                    ++_x;
+                    break;
+                }
+            } else
+                break;
+        }
+
+        for (int i = 0; i < 5; ++i) {
+            if (isValid(_x + i, _y)) {
+                if (board[_x + i][_y] == color)
+                    count++;
+                else
+                    break;
+            } else
+                break;
+        }
+
+        if (count == 5)
+            return true;
+
+        //우하향 대각선 체크
+        _x = x;
+        _y = y;
+        count = 0;
+
+        while (true) {
+            --_x;
+
+            if(_x < 0) {
+                _x = 0;
+                break;
+            }
+
+            --_y;
+
+            if(_y < 0) {
+                ++_x;
+                _y = 0;
+                break;
+            }
+
+            if (isValid(_x, _y)) {
+                if (board[_x][_y] != color) {
+                    ++_x;
+                    ++_y;
+                    break;
+                }
+            } else
+                break;
+        }
+
+        for (int i = 0; i < 5; ++i) {
+            if (isValid(_x + i, _y + i)) {
+                if (board[_x + i][_y + i] == color)
+                    count++;
+                else
+                    break;
+            } else
+                break;
+        }
+
+        if (count == 5)
+            return true;
+
+        //우상향 대각선 체크
+        _x = x;
+        _y = y;
+        count = 0;
+
+        while (true) {
+            ++_x;
+
+            if(_x >= Game.BOARD_SIZE) {
+                _x = Game.BOARD_SIZE - 1;
+                break;
+            }
+
+            --_y;
+
+            if(_y < 0) {
+                --_x;
+                _y = 0;
+                break;
+            }
+
+            if (isValid(_x, _y)) {
+                if (board[_x][_y] != color) {
+                    --_x;
+                    ++_y;
+                    break;
+                }
+            } else
+                break;
+        }
+
+        for (int i = 0; i < 5; ++i) {
+            if (isValid(_x - i, _y + i)) {
+                if (board[_x - i][_y + i] == color)
+                    count++;
+                else
+                    break;
+            } else
+                break;
+        }
+
+        if (count == 5)
+            return true;
+
+        return false;
+    }
+
     public void printBoard() {
         for (int i = 0; i < Game.BOARD_SIZE; ++i) {
             for (int j = 0; j < Game.BOARD_SIZE; ++j) {
-                if(this.board[i][j] == Game.PLAYER_A)
+                if (this.board[i][j] == Game.WHITE_PLAYER)
                     System.out.print('○');
-                else if(this.board[i][j] == Game.PLAYER_B)
+                else if (this.board[i][j] == Game.BLACK_PLAYER)
                     System.out.print('●');
                 else
                     System.out.print('□');

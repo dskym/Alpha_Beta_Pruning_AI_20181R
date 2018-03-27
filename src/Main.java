@@ -1,8 +1,10 @@
+import java.util.Scanner;
+
 /*
 1. 오목을 구현한다.
 - 시간 제한을 입력받을 수 있다.
 - 누가 먼저 시작하는 지 입력받을 수 있다.
-- 놓을 돌의 위치는 좌표롤 입력 받는다.
+- 놓을 돌의 위치는 좌표를 입력 받는다.
 - 오목을 어떻게 체크할 지 아이디어를 생각한다(놓은 돌 주변만?)
 - 오목판은 19x19 배열
 
@@ -26,8 +28,8 @@ Tree
 */
 public class Main {
     public static void main(String args[]) {
-        Game game = new Game(Game.PLAYER_A, 10);
+        Game game = new Game();
 
-        Game.board.printBoard();
+        game.play();
     }
 }
