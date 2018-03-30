@@ -20,6 +20,10 @@ public class Board {
         this.board[x][y] = player;
     }
 
+    public int[][] getBoard() {
+        return board;
+    }
+
     public boolean isValid(int x, int y) {
         if (x < 0 || x >= Game.BOARD_SIZE || y < 0 || y >= Game.BOARD_SIZE)
             return false;
@@ -27,14 +31,17 @@ public class Board {
             return true;
     }
 
-   public boolean isExist(int x, int y) {
-        if(board[x][y] != 0)
+    public boolean isExist(int x, int y) {
+        if (board[x][y] != 0)
             return true;
         else
             return false;
-   }
+    }
 
     public boolean checkBoard(int x, int y) {
+        if(!isValid(x, y))
+            return false;
+
         int color = this.board[x][y];
 
         //가로 체크
@@ -45,7 +52,7 @@ public class Board {
         while (true) {
             --_y;
 
-            if(_y < 0) {
+            if (_y < 0) {
                 _y = 0;
                 break;
             }
@@ -80,7 +87,7 @@ public class Board {
         while (true) {
             --_x;
 
-            if(_x < 0) {
+            if (_x < 0) {
                 _x = 0;
                 break;
             }
@@ -115,14 +122,14 @@ public class Board {
         while (true) {
             --_x;
 
-            if(_x < 0) {
+            if (_x < 0) {
                 _x = 0;
                 break;
             }
 
             --_y;
 
-            if(_y < 0) {
+            if (_y < 0) {
                 ++_x;
                 _y = 0;
                 break;
@@ -159,14 +166,14 @@ public class Board {
         while (true) {
             ++_x;
 
-            if(_x >= Game.BOARD_SIZE) {
+            if (_x >= Game.BOARD_SIZE) {
                 _x = Game.BOARD_SIZE - 1;
                 break;
             }
 
             --_y;
 
-            if(_y < 0) {
+            if (_y < 0) {
                 --_x;
                 _y = 0;
                 break;

@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 /*
 1. 오목을 구현한다.
 - 시간 제한을 입력받을 수 있다.
@@ -26,6 +24,7 @@ Tree
 - Iterative Deepening
 - Alpha-Beta Pruning
 */
+
 public class Main {
     public static void main(String args[]) {
         Game game = new Game();
