@@ -109,6 +109,14 @@ public class Game {
             else if (currentPlayer == aiPlayer) {
                 //  do alpha beta pruning
                 if(Game.board.isExist(9, 9)) {
+                    for(int i=0;i<future.size();++i) {
+                        int x = future.get(i).getKey();
+                        int y = future.get(i).getValue();
+
+                        if(Game.board.isExist(x, y))
+                            future.remove(new Pair(x, y));
+                    }
+
                     State nextState = iterativeDeepeningSearch.iterativeDeepeningSearch(new State(), future);
 
                     if (nextState == null)
@@ -140,6 +148,8 @@ public class Game {
                     }
                 }
             }
+
+            System.out.println(future.size());
 
             Game.board.printBoard();
 

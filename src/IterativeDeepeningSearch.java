@@ -13,7 +13,6 @@ public class IterativeDeepeningSearch {
         State bestState = null;
 
         for (int i = 1; i <= Game.DEPTH; ++i) {
-            System.out.println(i);
             bestState = alphaBetaPruning.alpha_beta_pruning(state, future, i);
         }
 
