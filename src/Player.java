@@ -6,6 +6,15 @@ Player
 
 public class Player {
     private int id;
+    private boolean first;
+
+    public boolean isFirst() {
+        return first;
+    }
+
+    public void setFirst(boolean first) {
+        this.first = first;
+    }
 
     public void setId(int id) {
         this.id = id;

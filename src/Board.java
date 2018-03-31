@@ -39,7 +39,7 @@ public class Board {
     }
 
     public boolean checkBoard(int x, int y) {
-        if(!isValid(x, y))
+        if (!isValid(x, y))
             return false;
 
         int color = this.board[x][y];
@@ -206,14 +206,16 @@ public class Board {
     }
 
     public void printBoard() {
+        System.out.println("   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18");
         for (int i = 0; i < Game.BOARD_SIZE; ++i) {
+            System.out.printf("%2d", i);
             for (int j = 0; j < Game.BOARD_SIZE; ++j) {
                 if (this.board[i][j] == Game.WHITE_PLAYER)
-                    System.out.print('○');
+                    System.out.printf("%2c", '○');
                 else if (this.board[i][j] == Game.BLACK_PLAYER)
-                    System.out.print('●');
+                    System.out.printf("%2c", '●');
                 else
-                    System.out.print('□');
+                    System.out.printf("%2c", '□');
             }
             System.out.println();
         }

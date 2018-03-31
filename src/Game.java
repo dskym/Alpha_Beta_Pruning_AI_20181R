@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Game {
     public static int BOARD_SIZE = 19;
-    public static int DEPTH = 5;
+    public static int DEPTH = 4;
     public static int timeLimit;
 
     public static int BLACK_PLAYER = 1;
@@ -67,12 +67,18 @@ public class Game {
                 humanPlayer.setId(Game.BLACK_PLAYER);
                 aiPlayer.setId(Game.WHITE_PLAYER);
 
+                humanPlayer.setFirst(true);
+                aiPlayer.setFirst(false);
+
                 Game.currentPlayer = humanPlayer;
 
                 break;
             } else if (player == Game.AI) {
                 aiPlayer.setId(Game.BLACK_PLAYER);
                 humanPlayer.setId(Game.WHITE_PLAYER);
+
+                aiPlayer.setFirst(true);
+                humanPlayer.setFirst(false);
 
                 Game.currentPlayer = aiPlayer;
 
@@ -104,18 +110,22 @@ public class Game {
         inputTimeLimit();
 
         while (true) {
+            System.out.println("Future Size : " + future.size());
+
+            for (int i = 0; i < future.size(); ++i) {
+                int x = future.get(i).getKey();
+                int y = future.get(i).getValue();
+
+                if (Game.board.isExist(x, y))
+                    future.remove(new Pair(x, y));
+            }
+
             if (currentPlayer == humanPlayer)
                 inputStonePosition();
             else if (currentPlayer == aiPlayer) {
-                //  do alpha beta pruning
-                if(Game.board.isExist(9, 9)) {
-                    for(int i=0;i<future.size();++i) {
-                        int x = future.get(i).getKey();
-                        int y = future.get(i).getValue();
-
-                        if(Game.board.isExist(x, y))
-                            future.remove(new Pair(x, y));
-                    }
+                //do alpha beta pruning
+                if (Game.board.isExist(9, 9)) {
+                    //remove
 
                     State nextState = iterativeDeepeningSearch.iterativeDeepeningSearch(new State(), future);
 
@@ -124,8 +134,9 @@ public class Game {
 
                     x = nextState.getX();
                     y = nextState.getY();
-                }
-                else {
+
+                    System.out.println("X, Y : " + x + ", " + y);
+                } else {
                     x = 9;
                     y = 9;
                 }
@@ -142,14 +153,12 @@ public class Game {
                 int newX = x + Game.pos[0][i];
                 int newY = y + Game.pos[1][i];
 
-                if(Game.board.isValid(newX, newY)) {
+                if (Game.board.isValid(newX, newY)) {
                     if (!Game.board.isExist(newX, newY)) {
                         future.add(new Pair(newX, newY));
                     }
                 }
             }
-
-            System.out.println(future.size());
 
             Game.board.printBoard();
 

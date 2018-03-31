@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 public class AlphaBetaPruning {
     public State alpha_beta_pruning(State state, ArrayList<Pair<Integer, Integer>> future, int depth) {
-        ArrayList<Pair<Integer, Integer>> copyFuture = (ArrayList<Pair<Integer, Integer>>) future.clone();
-
-        Pair<State, Integer> nextStatePair = max_value(state, copyFuture, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        Pair<State, Integer> nextStatePair = max_value(state, future, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
         return nextStatePair.getKey();
     }
@@ -132,138 +130,599 @@ public class AlphaBetaPruning {
                 //내가 오목을 만들 수 있는 경우
                 if (i < Game.BOARD_SIZE - 4) {
                     if (board[i][j] == ai && board[i + 1][j] == ai && board[i + 2][j] == ai && board[i + 3][j] == ai && board[i + 4][j] == ai) {
-                        return Integer.MAX_VALUE;
+                        utility += 99999999;
                     }
                 }
                 if (j < Game.BOARD_SIZE - 4) {
                     if (board[i][j] == ai && board[i][j + 1] == ai && board[i][j + 2] == ai && board[i][j + 3] == ai && board[i][j + 4] == ai) {
-                        return Integer.MAX_VALUE;
+                        utility += 99999999;
                     }
                 }
                 if (i < Game.BOARD_SIZE - 4 && j < Game.BOARD_SIZE - 4) {
                     if (board[i][j] == ai && board[i + 1][j + 1] == ai && board[i + 2][j + 2] == ai && board[i + 3][j + 3] == ai && board[i + 4][j + 4] == ai) {
-                        return Integer.MAX_VALUE;
+                        utility += 99999999;
+                    }
+                }
+                if (i > 3 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == ai && board[i - 2][j + 2] == ai && board[i - 3][j + 3] == ai && board[i - 4][j + 4] == ai) {
+                        utility += 99999999;
                     }
                 }
 
                 //상대가 오목을 만들 수 있는 경우
                 if (i < Game.BOARD_SIZE - 4) {
                     if (board[i][j] == human && board[i + 1][j] == human && board[i + 2][j] == human && board[i + 3][j] == human && board[i + 4][j] == human) {
-                        return Integer.MIN_VALUE;
+                        utility -= 99999999;
                     }
                 }
                 if (j < Game.BOARD_SIZE - 4) {
                     if (board[i][j] == human && board[i][j + 1] == human && board[i][j + 2] == human && board[i][j + 3] == human && board[i][j + 4] == human) {
-                        return Integer.MIN_VALUE;
+                        utility -= 99999999;
                     }
                 }
                 if (i < Game.BOARD_SIZE - 4 && j < Game.BOARD_SIZE - 4) {
                     if (board[i][j] == human && board[i + 1][j + 1] == human && board[i + 2][j + 2] == human && board[i + 3][j + 3] == human && board[i + 4][j + 4] == human) {
-                        return Integer.MIN_VALUE;
+                        utility -= 99999999;
+                    }
+                }
+                if (i > 3 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == human && board[i - 2][j + 2] == human && board[i - 3][j + 3] == human && board[i - 4][j + 4] == human) {
+                        utility -= 99999999;
                     }
                 }
 
                 //내가 사목을 만들 수 있는 경우
                 if (i < Game.BOARD_SIZE - 3) {
                     if (board[i][j] == ai && board[i + 1][j] == ai && board[i + 2][j] == ai && board[i + 3][j] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.9);
+                        utility += 999999;
                     }
                 }
                 if (j < Game.BOARD_SIZE - 3) {
                     if (board[i][j] == ai && board[i][j + 1] == ai && board[i][j + 2] == ai && board[i][j + 3] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.9);
+                        utility += 999999;
                     }
                 }
                 if (i < Game.BOARD_SIZE - 3 && j < Game.BOARD_SIZE - 3) {
                     if (board[i][j] == ai && board[i + 1][j + 1] == ai && board[i + 2][j + 2] == ai && board[i + 3][j + 3] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.9);
+                        utility += 999999;
+                    }
+                }
+                if (i > 2 && j < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == ai && board[i - 2][j + 2] == ai && board[i - 3][j + 3] == ai) {
+                        utility += 999999;
                     }
                 }
 
                 //상대가 사목을 만들 수 있는 경우
                 if (i < Game.BOARD_SIZE - 3) {
                     if (board[i][j] == human && board[i + 1][j] == human && board[i + 2][j] == human && board[i + 3][j] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.9);
+                        utility -= 999999;
                     }
                 }
                 if (j < Game.BOARD_SIZE - 3) {
                     if (board[i][j] == human && board[i][j + 1] == human && board[i][j + 2] == human && board[i][j + 3] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.9);
+                        utility -= 999999;
                     }
                 }
                 if (i < Game.BOARD_SIZE - 3 && j < Game.BOARD_SIZE - 3) {
                     if (board[i][j] == human && board[i + 1][j + 1] == human && board[i + 2][j + 2] == human && board[i + 3][j + 3] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.9);
+                        utility -= 999999;
+                    }
+                }
+                if (i > 2 && j < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == human && board[i - 2][j + 2] == human && board[i - 3][j + 3] == human) {
+                        utility -= 999999;
                     }
                 }
 
                 //내가 삼목을 만들 수 있는 경우
                 if (i < Game.BOARD_SIZE - 2) {
                     if (board[i][j] == ai && board[i + 1][j] == ai && board[i + 2][j] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.8);
+                        utility += 9999;
                     }
                 }
                 if (j < Game.BOARD_SIZE - 2) {
                     if (board[i][j] == ai && board[i][j + 1] == ai && board[i][j + 2] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.8);
+                        utility += 9999;
                     }
                 }
                 if (i < Game.BOARD_SIZE - 2 && j < Game.BOARD_SIZE - 2) {
                     if (board[i][j] == ai && board[i + 1][j + 1] == ai && board[i + 2][j + 2] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.8);
+                        utility += 9999;
+                    }
+                }
+                if (i > 1 && j < Game.BOARD_SIZE - 2) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == ai && board[i - 2][j + 2] == ai) {
+                        utility += 9999;
                     }
                 }
 
                 //상대가 삼목을 만들 수 있는 경우
                 if (i < Game.BOARD_SIZE - 2) {
                     if (board[i][j] == human && board[i + 1][j] == human && board[i + 2][j] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.8);
+                        utility -= 9999;
                     }
                 }
                 if (j < Game.BOARD_SIZE - 2) {
                     if (board[i][j] == human && board[i][j + 1] == human && board[i][j + 2] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.8);
+                        utility -= 9999;
                     }
                 }
                 if (i < Game.BOARD_SIZE - 2 && j < Game.BOARD_SIZE - 2) {
                     if (board[i][j] == human && board[i + 1][j + 1] == human && board[i + 2][j + 2] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.8);
+                        utility -= 9999;
+                    }
+                }
+                if (i > 1 && j < Game.BOARD_SIZE - 2) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == human && board[i - 2][j + 2] == human) {
+                        utility -= 9999;
                     }
                 }
 
                 //내가 이목을 만들 수 있는 경우
-                if (i < Game.BOARD_SIZE - 2) {
+                if (i < Game.BOARD_SIZE - 1) {
                     if (board[i][j] == ai && board[i + 1][j] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.1);
+                        utility += 10;
                     }
                 }
-                if (j < Game.BOARD_SIZE - 2) {
+                if (j < Game.BOARD_SIZE - 1) {
                     if (board[i][j] == ai && board[i][j + 1] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.1);
+                        utility += 10;
                     }
                 }
-                if (i < Game.BOARD_SIZE - 2 && j < Game.BOARD_SIZE - 2) {
+                if (i < Game.BOARD_SIZE - 1 && j < Game.BOARD_SIZE - 1) {
                     if (board[i][j] == ai && board[i + 1][j + 1] == ai) {
-                        return (int) (Integer.MAX_VALUE * 0.1);
+                        utility += 10;
+                    }
+                }
+                if (i > 0 && j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == ai) {
+                        utility += 10;
                     }
                 }
 
                 //상대가 이목을 만들 수 있는 경우
-                if (i < Game.BOARD_SIZE - 2) {
+                if (i < Game.BOARD_SIZE - 1) {
                     if (board[i][j] == human && board[i + 1][j] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.1);
+                        utility -= 10;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == human && board[i][j + 1] == human) {
+                        utility -= 10;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 1 && j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == human && board[i + 1][j + 1] == human) {
+                        utility -= 10;
+                    }
+                }
+                if (i > 0 && j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == human) {
+                        utility -= 10;
+                    }
+                }
+
+                //내 돌 주위에 상대 돌이 4개가 있는 경우
+                if (i < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i + 1][j] == human && board[i + 2][j] == human && board[i + 3][j] == human && board[i + 4][j] == human) {
+                        utility += 500000;
+                    }
+                }
+                if (i > 3) {
+                    if (board[i][j] == ai && board[i - 1][j] == human && board[i - 2][j] == human && board[i - 3][j] == human && board[i - 4][j] == human) {
+                        utility += 500000;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i][j + 1] == human && board[i][j + 2] == human && board[i][j + 3] == human && board[i][j + 4] == human) {
+                        utility += 500000;
+                    }
+                }
+                if (j  > 3) {
+                    if (board[i][j] == ai && board[i][j - 1] == human && board[i][j - 2] == human && board[i][j - 3] == human && board[i][j - 4] == human) {
+                        utility += 500000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 4 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i + 1][j + 1] == human && board[i + 2][j + 2] == human && board[i + 3][j + 3] == human && board[i + 4][j + 4] == human) {
+                        utility += 500000;
+                    }
+                }
+                if (i > 3 && j > 3) {
+                    if (board[i][j] == ai && board[i - 1][j - 1] == human && board[i - 2][j - 2] == human && board[i - 3][j - 3] == human && board[i - 4][j - 4] == human) {
+                        utility += 500000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 4 && j > 3) {
+                    if (board[i][j] == ai && board[i + 1][j - 1] == human && board[i + 2][j - 2] == human && board[i + 3][j - 3] == human && board[i + 4][j - 4] == human) {
+                        utility += 500000;
+                    }
+                }
+                if (i > 3 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == human && board[i - 2][j + 2] == human && board[i - 3][j + 3] == human && board[i - 4][j + 4] == human) {
+                        utility += 500000;
+                    }
+                }
+
+                //상대 돌 주위에 내 돌이 4개가 있는 경우
+                if (i < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i + 1][j] == ai && board[i + 2][j] == ai && board[i + 3][j] == ai && board[i + 4][j] == ai) {
+                        utility -= 500000;
+                    }
+                }
+                if (i > 3) {
+                    if (board[i][j] == human && board[i - 1][j] == ai && board[i - 2][j] == ai && board[i - 3][j] == ai && board[i - 4][j] == ai) {
+                        utility -= 500000;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i][j + 1] == ai && board[i][j + 2] == ai && board[i][j + 3] == ai && board[i][j + 4] == ai) {
+                        utility -= 500000;
+                    }
+                }
+                if (j > 3) {
+                    if (board[i][j] == human && board[i][j - 1] == ai && board[i][j - 2] == ai && board[i][j - 3] == ai && board[i][j - 4] == ai) {
+                        utility -= 500000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 4 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i + 1][j + 1] == ai && board[i + 2][j + 2] == ai && board[i + 3][j + 3] == ai && board[i + 4][j + 4] == ai) {
+                        utility -= 500000;
+                    }
+                }
+                if (i > 3 && j > 3) {
+                    if (board[i][j] == human && board[i - 1][j - 1] == ai && board[i - 2][j - 2] == ai && board[i - 3][j - 3] == ai && board[i - 4][j - 4] == ai) {
+                        utility -= 500000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 4 && j > 3) {
+                    if (board[i][j] == human && board[i + 1][j - 1] == ai && board[i + 2][j - 2] == ai && board[i + 3][j - 3] == ai && board[i + 4][j - 4] == ai) {
+                        utility -= 500000;
+                    }
+                }
+                if (i > 3 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == ai && board[i - 2][j + 2] == ai && board[i - 3][j + 3] == ai && board[i - 4][j + 4] == ai) {
+                        utility -= 500000;
+                    }
+                }
+
+                //내 돌 주위에 상대 돌이 3개가 있는 경우
+                if (i < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == ai && board[i + 1][j] == human && board[i + 2][j] == human && board[i + 3][j] == human) {
+                        utility += 5000;
+                    }
+                }
+                if (i > 2) {
+                    if (board[i][j] == ai && board[i - 1][j] == human && board[i - 2][j] == human && board[i - 3][j] == human) {
+                        utility += 5000;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == ai && board[i][j + 1] == human && board[i][j + 2] == human && board[i][j + 3] == human) {
+                        utility += 5000;
+                    }
+                }
+                if (j  > 2) {
+                    if (board[i][j] == ai && board[i][j - 1] == human && board[i][j - 2] == human && board[i][j - 3] == human) {
+                        utility += 5000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 3 && j < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == ai && board[i + 1][j + 1] == human && board[i + 2][j + 2] == human && board[i + 3][j + 3] == human) {
+                        utility += 5000;
+                    }
+                }
+                if (i > 2 && j > 2) {
+                    if (board[i][j] == ai && board[i - 1][j - 1] == human && board[i - 2][j - 2] == human && board[i - 3][j - 3] == human) {
+                        utility += 5000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 3 && j > 2) {
+                    if (board[i][j] == ai && board[i + 1][j - 1] == human && board[i + 2][j - 2] == human && board[i + 3][j - 3] == human) {
+                        utility += 5000;
+                    }
+                }
+                if (i > 2 && j < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == human && board[i - 2][j + 2] == human && board[i - 3][j + 3] == human) {
+                        utility += 5000;
+                    }
+                }
+
+                //상대 돌 주위에 내 돌이 3개가 있는 경우
+                if (i < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == human && board[i + 1][j] == ai && board[i + 2][j] == ai && board[i + 3][j] == ai) {
+                        utility -= 5000;
+                    }
+                }
+                if (i > 2) {
+                    if (board[i][j] == human && board[i - 1][j] == ai && board[i - 2][j] == ai && board[i - 3][j] == ai) {
+                        utility -= 5000;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == human && board[i][j + 1] == ai && board[i][j + 2] == ai && board[i][j + 3] == ai) {
+                        utility -= 5000;
+                    }
+                }
+                if (j > 2) {
+                    if (board[i][j] == human && board[i][j - 1] == ai && board[i][j - 2] == ai && board[i][j - 3] == ai) {
+                        utility -= 5000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 3 && j < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == human && board[i + 1][j + 1] == ai && board[i + 2][j + 2] == ai && board[i + 3][j + 3] == ai) {
+                        utility -= 5000;
+                    }
+                }
+                if (i > 2 && j > 2) {
+                    if (board[i][j] == human && board[i - 1][j - 1] == ai && board[i - 2][j - 2] == ai && board[i - 3][j - 3] == ai) {
+                        utility -= 5000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 3 && j > 2) {
+                    if (board[i][j] == human && board[i + 1][j - 1] == ai && board[i + 2][j - 2] == ai && board[i + 3][j - 3] == ai) {
+                        utility -= 5000;
+                    }
+                }
+                if (i > 2 && j < Game.BOARD_SIZE - 3) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == ai && board[i - 2][j + 2] == ai && board[i - 3][j + 3] == ai) {
+                        utility -= 5000;
+                    }
+                }
+
+                //내 돌 주위에 상대 돌이 2개가 있는 경우
+                if (i < Game.BOARD_SIZE - 2) {
+                    if (board[i][j] == ai && board[i + 1][j] == human && board[i + 2][j] == human) {
+                        utility += 50;
+                    }
+                }
+                if (i > 1) {
+                    if (board[i][j] == ai && board[i - 1][j] == human && board[i - 2][j] == human) {
+                        utility += 50;
                     }
                 }
                 if (j < Game.BOARD_SIZE - 2) {
-                    if (board[i][j] == human && board[i][j + 1] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.1);
+                    if (board[i][j] == ai && board[i][j + 1] == human && board[i][j + 2] == human) {
+                        utility += 50;
+                    }
+                }
+                if (j  > 1) {
+                    if (board[i][j] == ai && board[i][j - 1] == human && board[i][j - 2] == human) {
+                        utility += 50;
                     }
                 }
                 if (i < Game.BOARD_SIZE - 2 && j < Game.BOARD_SIZE - 2) {
-                    if (board[i][j] == human && board[i + 1][j + 1] == human) {
-                        return (int) (Integer.MIN_VALUE * 0.1);
+                    if (board[i][j] == ai && board[i + 1][j + 1] == human && board[i + 2][j + 2] == human) {
+                        utility += 50;
                     }
                 }
+                if (i > 1 && j > 1) {
+                    if (board[i][j] == ai && board[i - 1][j - 1] == human && board[i - 2][j - 2] == human) {
+                        utility += 50;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 2 && j > 1) {
+                    if (board[i][j] == ai && board[i + 1][j - 1] == human && board[i + 2][j - 2] == human) {
+                        utility += 50;
+                    }
+                }
+                if (i > 1 && j < Game.BOARD_SIZE - 2) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == human && board[i - 2][j + 2] == human) {
+                        utility += 50;
+                    }
+                }
+
+                //상대 돌 주위에 내 돌이 2개가 있는 경우
+                if (i < Game.BOARD_SIZE - 2) {
+                    if (board[i][j] == human && board[i + 1][j] == ai && board[i + 2][j] == ai) {
+                        utility -= 50;
+                    }
+                }
+                if (i > 1) {
+                    if (board[i][j] == human && board[i - 1][j] == ai && board[i - 2][j] == ai) {
+                        utility -= 50;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 2) {
+                    if (board[i][j] == human && board[i][j + 1] == ai && board[i][j + 2] == ai) {
+                        utility -= 50;
+                    }
+                }
+                if (j > 1) {
+                    if (board[i][j] == human && board[i][j - 1] == ai && board[i][j - 2] == ai) {
+                        utility -= 50;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 2 && j < Game.BOARD_SIZE - 2) {
+                    if (board[i][j] == human && board[i + 1][j + 1] == ai && board[i + 2][j + 2] == ai) {
+                        utility -= 50;
+                    }
+                }
+                if (i > 1 && j > 1) {
+                    if (board[i][j] == human && board[i - 1][j - 1] == ai && board[i - 2][j - 2] == ai) {
+                        utility -= 50;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 2 && j > 1) {
+                    if (board[i][j] == human && board[i + 1][j - 1] == ai && board[i + 2][j - 2] == ai) {
+                        utility -= 50;
+                    }
+                }
+                if (i > 1 && j < Game.BOARD_SIZE - 2) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == ai && board[i - 2][j + 2] == ai) {
+                        utility -= 50;
+                    }
+                }
+
+                //내 돌 주위에 상대 돌이 1개가 있는 경우
+                if (i < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == ai && board[i + 1][j] == human) {
+                        utility += 5;
+                    }
+                }
+                if (i > 0) {
+                    if (board[i][j] == ai && board[i - 1][j] == human) {
+                        utility += 5;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == ai && board[i][j + 1] == human) {
+                        utility += 5;
+                    }
+                }
+                if (j  > 0) {
+                    if (board[i][j] == ai && board[i][j - 1] == human) {
+                        utility += 5;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 1 && j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == ai && board[i + 1][j + 1] == human) {
+                        utility += 5;
+                    }
+                }
+                if (i > 0 && j > 0) {
+                    if (board[i][j] == ai && board[i - 1][j - 1] == human) {
+                        utility += 5;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 1 && j > 0) {
+                    if (board[i][j] == ai && board[i + 1][j - 1] == human) {
+                        utility += 5;
+                    }
+                }
+                if (i > 0 && j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == human) {
+                        utility += 5;
+                    }
+                }
+
+                //상대 돌 주위에 내 돌이 1개가 있는 경우
+                if (i < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == human && board[i + 1][j] == ai) {
+                        utility -= 5;
+                    }
+                }
+                if (i > 0) {
+                    if (board[i][j] == human && board[i - 1][j] == ai) {
+                        utility -= 5;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == human && board[i][j + 1] == ai) {
+                        utility -= 5;
+                    }
+                }
+                if (j > 0) {
+                    if (board[i][j] == human && board[i][j - 1] == ai) {
+                        utility -= 5;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 1 && j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == human && board[i + 1][j + 1] == ai) {
+                        utility -= 5;
+                    }
+                }
+                if (i > 0 && j > 0) {
+                    if (board[i][j] == human && board[i - 1][j - 1] == ai) {
+                        utility -= 5;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 1 && j > 0) {
+                    if (board[i][j] == human && board[i + 1][j - 1] == ai) {
+                        utility -= 5;
+                    }
+                }
+                if (i > 0 && j < Game.BOARD_SIZE - 1) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == ai) {
+                        utility -= 5;
+                    }
+                }
+
+                //내 돌이 상대 돌 3개를 감싸는 경우
+                if (i < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i + 1][j] == human && board[i + 2][j] == human && board[i + 3][j] == human && board[i + 4][j] == ai) {
+                        utility += 1000000000;
+                    }
+                }
+                if (i > 3) {
+                    if (board[i][j] == ai && board[i - 1][j] == human && board[i - 2][j] == human && board[i - 3][j] == human && board[i - 4][j] == ai) {
+                        utility += 1000000000;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i][j + 1] == human && board[i][j + 2] == human && board[i][j + 3] == human && board[i][j + 4] == ai) {
+                        utility += 1000000000;
+                    }
+                }
+                if (j  > 3) {
+                    if (board[i][j] == ai && board[i][j - 1] == human && board[i][j - 2] == human && board[i][j - 3] == human && board[i][j - 4] == ai) {
+                        utility += 1000000000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 4 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i + 1][j + 1] == human && board[i + 2][j + 2] == human && board[i + 3][j + 3] == human && board[i + 4][j + 4] == ai) {
+                        utility += 1000000000;
+                    }
+                }
+                if (i > 3 && j > 3) {
+                    if (board[i][j] == ai && board[i - 1][j - 1] == human && board[i - 2][j - 2] == human && board[i - 3][j - 3] == human && board[i - 4][j - 4] == ai) {
+                        utility += 1000000000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 4 && j > 3) {
+                    if (board[i][j] == ai && board[i + 1][j - 1] == human && board[i + 2][j - 2] == human && board[i + 3][j - 3] == human && board[i + 4][j - 4] == ai) {
+                        utility += 1000000000;
+                    }
+                }
+                if (i > 3 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == ai && board[i - 1][j + 1] == human && board[i - 2][j + 2] == human && board[i - 3][j + 3] == human && board[i - 4][j + 4] == ai) {
+                        utility += 1000000000;
+                    }
+                }
+
+                //상대 돌이 내 돌 3개를 감싸는 경우
+                if (i < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i + 1][j] == ai && board[i + 2][j] == ai && board[i + 3][j] == ai && board[i + 4][j] == human) {
+                        utility -= 1000000000;
+                    }
+                }
+                if (i > 3) {
+                    if (board[i][j] == human && board[i - 1][j] == ai && board[i - 2][j] == ai && board[i - 3][j] == ai && board[i - 4][j] == human) {
+                        utility -= 1000000000;
+                    }
+                }
+                if (j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i][j + 1] == ai && board[i][j + 2] == ai && board[i][j + 3] == ai && board[i][j + 4] == human) {
+                        utility -= 1000000000;
+                    }
+                }
+                if (j > 3) {
+                    if (board[i][j] == human && board[i][j - 1] == ai && board[i][j - 2] == ai && board[i][j - 3] == ai && board[i][j - 4] == human) {
+                        utility -= 1000000000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 4 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i + 1][j + 1] == ai && board[i + 2][j + 2] == ai && board[i + 3][j + 3] == ai && board[i + 4][j + 4] == human) {
+                        utility -= 1000000000;
+                    }
+                }
+                if (i > 3 && j > 3) {
+                    if (board[i][j] == human && board[i - 1][j - 1] == ai && board[i - 2][j - 2] == ai && board[i - 3][j - 3] == ai && board[i - 4][j - 4] == human) {
+                        utility -= 1000000000;
+                    }
+                }
+                if (i < Game.BOARD_SIZE - 4 && j > 3) {
+                    if (board[i][j] == human && board[i + 1][j - 1] == ai && board[i + 2][j - 2] == ai && board[i + 3][j - 3] == ai && board[i + 4][j - 4] == human) {
+                        utility -= 1000000000;
+                    }
+                }
+                if (i > 3 && j < Game.BOARD_SIZE - 4) {
+                    if (board[i][j] == human && board[i - 1][j + 1] == ai && board[i - 2][j + 2] == ai && board[i - 3][j + 3] == ai && board[i - 4][j + 4] == human) {
+                        utility -= 1000000000;
+                    }
+                }
+
             }
         }
 
