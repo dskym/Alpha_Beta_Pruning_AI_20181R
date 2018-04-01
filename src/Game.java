@@ -5,7 +5,8 @@ Game
 
 import javafx.util.Pair;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Game {
@@ -36,7 +37,7 @@ public class Game {
     private Player humanPlayer;
     private Player aiPlayer;
 
-    private ArrayList<Pair<Integer, Integer>> future;
+    private HashSet<Pair<Integer, Integer>> future;
 
     private IterativeDeepeningSearch iterativeDeepeningSearch;
 
@@ -46,7 +47,7 @@ public class Game {
         humanPlayer = new Player();
         aiPlayer = new Player();
 
-        future = new ArrayList();
+        future = new HashSet();
 
         iterativeDeepeningSearch = new IterativeDeepeningSearch();
     }
@@ -110,8 +111,21 @@ public class Game {
         inputTimeLimit();
 
         while (true) {
+            Iterator iterator = future.iterator();
+
+            while(iterator.hasNext()) {
+                Pair<Integer, Integer> pos = (Pair<Integer, Integer>)iterator.next();
+
+                int x = pos.getKey();
+                int y = pos.getValue();
+
+                if (Game.board.isExist(x, y))
+                    iterator.remove();
+            }
+
             System.out.println("Future Size : " + future.size());
 
+            /*
             for (int i = 0; i < future.size(); ++i) {
                 int x = future.get(i).getKey();
                 int y = future.get(i).getValue();
@@ -119,6 +133,7 @@ public class Game {
                 if (Game.board.isExist(x, y))
                     future.remove(new Pair(x, y));
             }
+            */
 
             if (currentPlayer == humanPlayer)
                 inputStonePosition();
