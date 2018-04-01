@@ -215,7 +215,7 @@ public class Board {
                 else if (this.board[i][j] == Game.BLACK_PLAYER)
                     System.out.printf("%2c", '●');
                 else
-                    System.out.printf("%2c", '□');
+                    System.out.printf("%2c", '※');
             }
             System.out.println();
         }

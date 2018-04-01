@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Game {
     public static int BOARD_SIZE = 19;
-    public static int DEPTH = 4;
+    public static int DEPTH = 1;
     public static int timeLimit;
 
     public static int BLACK_PLAYER = 1;
