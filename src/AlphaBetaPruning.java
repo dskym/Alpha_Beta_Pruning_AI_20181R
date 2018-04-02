@@ -22,14 +22,14 @@ public class AlphaBetaPruning {
 
         while (iterator.hasNext()) {
             HashSet<Pair<Integer, Integer>> copyFuture = (HashSet<Pair<Integer, Integer>>) future.clone();
-            State nextState = new State(state);
+            State nextState = new State(state);1
 
             Pair<Integer, Integer> pos = (Pair<Integer, Integer>) iterator.next();
 
             int x = pos.getKey();
             int y = pos.getValue();
 
-            if (Game.board.isExist(x, y)) {
+            if (nextState.getBoard()[x][y] != 0) {
                 iterator.remove();
                 continue;
             }
@@ -47,7 +47,7 @@ public class AlphaBetaPruning {
 
 
                 if (Game.board.isValid(newX, newY)) {
-                    if (!Game.board.isExist(newX, newY)) {
+                    if (nextState.getBoard()[newX][newY] == 0) {
                         copyFuture.add(new Pair(newX, newY));
                     }
                 }
@@ -89,7 +89,7 @@ public class AlphaBetaPruning {
             int x = pos.getKey();
             int y = pos.getValue();
 
-            if (Game.board.isExist(x, y)) {
+            if (nextState.getBoard()[x][y] != 0) {
                 iterator.remove();
                 continue;
             }
@@ -106,7 +106,7 @@ public class AlphaBetaPruning {
                 int newY = y + Game.pos[1][j];
 
                 if (Game.board.isValid(newX, newY)) {
-                    if (!Game.board.isExist(newX, newY)) {
+                    if (nextState.getBoard()[newX][newY] == 0) {
                         copyFuture.add(new Pair(newX, newY));
                     }
                 }
