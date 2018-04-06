@@ -10,12 +10,24 @@ public class IterativeDeepeningSearch {
     }
 
     public State iterativeDeepeningSearch(State state, HashSet<Pair<Integer, Integer>> future) {
-        State bestState = null;
+        Pair<State, Integer> bestPair = null;
 
-        for (int i = 1; i <= Game.DEPTH; ++i) {
-            bestState = alphaBetaPruning.alpha_beta_pruning(state, future, i);
+        for(int i=0;;++i) {
+            Pair<State, Integer> tempPair = alphaBetaPruning.alpha_beta_pruning(state, future, i);
+
+            if(bestPair == null)
+                bestPair = tempPair;
+            else {
+                if (bestPair.getValue() <= tempPair.getValue())
+                    bestPair = tempPair;
+            }
+
+            if(System.nanoTime() - Game.startTime >= (long)(Game.timeLimit * 800000000)) {
+                System.out.println("Time Over");
+                break;
+            }
         }
 
-        return bestState;
+        return bestPair.getKey();
     }
 }

@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public class Game {
     public static int BOARD_SIZE = 19;
-    public static int DEPTH = 4;
-    public static int timeLimit;
+    public static long timeLimit;
+    public static long startTime;
 
     public static int BLACK_PLAYER = 1;
     public static int WHITE_PLAYER = 2;
@@ -111,6 +111,8 @@ public class Game {
         inputTimeLimit();
 
         while (true) {
+            Game.startTime = System.nanoTime();
+
             Iterator iterator = future.iterator();
 
             while(iterator.hasNext()) {

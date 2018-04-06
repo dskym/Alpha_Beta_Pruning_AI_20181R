@@ -16,6 +16,10 @@ public class Board {
                 this.board[i][j] = 0;
     }
 
+    public void setBoard(Board board) {
+        this.board = board.getBoard();
+    }
+
     public void setBoard(int x, int y, int player) {
         this.board[x][y] = player;
     }

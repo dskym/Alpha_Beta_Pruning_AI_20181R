@@ -4,10 +4,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 public class AlphaBetaPruning {
-    public State alpha_beta_pruning(State state, HashSet<Pair<Integer, Integer>> future, int depth) {
+    public Pair<State, Integer> alpha_beta_pruning(State state, HashSet<Pair<Integer, Integer>> future, int depth) {
         Pair<State, Integer> nextStatePair = max_value(state, future, depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-        return nextStatePair.getKey();
+        return nextStatePair;
     }
 
     private Pair<State, Integer> max_value(State state, HashSet<Pair<Integer, Integer>> future, int depth, int alpha, int beta) {
@@ -21,8 +21,13 @@ public class AlphaBetaPruning {
         Iterator iterator = future.iterator();
 
         while (iterator.hasNext()) {
+            if(System.nanoTime() - Game.startTime >= (long)(Game.timeLimit * 800000000)) {
+                System.out.println("Time Over");
+                return new Pair(bestState, v);
+            }
+
             HashSet<Pair<Integer, Integer>> copyFuture = (HashSet<Pair<Integer, Integer>>) future.clone();
-            State nextState = new State(state);1
+            State nextState = new State(state);
 
             Pair<Integer, Integer> pos = (Pair<Integer, Integer>) iterator.next();
 
@@ -81,6 +86,11 @@ public class AlphaBetaPruning {
         Iterator iterator = future.iterator();
 
         while(iterator.hasNext()) {
+            if(System.nanoTime() - Game.startTime >= (long)(Game.timeLimit * 800000000)) {
+                System.out.println("Time Over");
+                return new Pair(bestState, v);
+            }
+
             HashSet<Pair<Integer, Integer>> copyFuture = (HashSet<Pair<Integer, Integer>>) future.clone();
             State nextState = new State(state);
 
